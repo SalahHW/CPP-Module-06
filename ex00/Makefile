@@ -6,7 +6,7 @@
 #    By: sbouheni <sbouheni@student.42mulhouse.fr>  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/22 18:39:10 by sbouheni          #+#    #+#              #
-#    Updated: 2024/05/11 03:57:41 by sbouheni         ###   ########.fr        #
+#    Updated: 2024/05/22 17:17:54 by sbouheni         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ SRCS_DIR				=	source/
 OBJ_DIR					=	obj/
 
 SRCS					=	main.cpp											\
-							ScalarConverter.cpp
+							ScalarConverter.cpp									\
 
 OBJS        			=	$(addprefix $(OBJ_DIR), $(SRCS:.cpp=.o))
 
