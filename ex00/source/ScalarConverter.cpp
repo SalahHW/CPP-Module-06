@@ -6,12 +6,13 @@
 /*   By: sbouheni <sbouheni@student.42mulhouse.fr>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 09:55:34 by sbouheni          #+#    #+#             */
-/*   Updated: 2024/05/23 01:54:55 by sbouheni         ###   ########.fr       */
+/*   Updated: 2024/05/23 02:34:09 by sbouheni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ScalarConverter.hpp"
 #include <cctype>
+#include <sstream>
 
 void ScalarConverter::convert(std::string const &input)
 {
@@ -49,11 +50,23 @@ void ScalarConverter::processChar(std::string const &input)
 	std::string int_output;
 	std::string double_output;
 	std::string float_output;
+	char char_value = 0;
+	int  int_value = 0;
+	double double_value = 0;
+	float float_value = 0;
 
 	if (input.length() == 1)
-		char_output = input;
+		char_value = input[0];
 	else if (input.length() == 3)
-		char_output = input[1];
+		char_value = input[1];
+	int_value = static_cast<int>(char_value);
+	double_value = static_cast<double>(char_value);
+	float_value = static_cast<float>(char_value);
+	char_output = char_value;
+	int_output = intToString(int_value);
+	double_output = doubleToString(double_value) + ".0";
+	float_output = floatToString(float_value) + ".0f";
+	printConvertedOutput(char_output, int_output, double_output, float_output);
 }
 
 void ScalarConverter::processInt(std::string const &input)
@@ -164,13 +177,34 @@ bool ScalarConverter::isDouble(const std::string &str)
 	return (has_digit && has_point);
 }
 
+std::string ScalarConverter::intToString(int value)
+{
+	std::stringstream ss;
+	ss << value;
+	return (ss.str());
+}
+
+std::string ScalarConverter::doubleToString(double value)
+{
+	std::stringstream ss;
+	ss << value;
+	return (ss.str());
+}
+
+std::string ScalarConverter::floatToString(float value)
+{
+	std::stringstream ss;
+	ss << value;
+	return (ss.str());
+}
+
 void ScalarConverter::printConvertedOutput(std::string const &charOutput,
 		std::string const &intOutput,
-		std::string const &floatOutput,
-		std::string const &doubleOutput)
+		std::string const &doubleOutput,
+		std::string const &floatOutput)
 {
 	std::cout << "char		= '" << charOutput << "'" << std::endl;
 	std::cout << "int		= " << intOutput << std::endl;
 	std::cout << "float		= " << floatOutput << std::endl;
-	std::cout << "double	= " << doubleOutput << std::endl;
+	std::cout << "double		= " << doubleOutput << std::endl;
 }
