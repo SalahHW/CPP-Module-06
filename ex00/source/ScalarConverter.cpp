@@ -6,13 +6,11 @@
 /*   By: sbouheni <sbouheni@student.42mulhouse.fr>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 09:55:34 by sbouheni          #+#    #+#             */
-/*   Updated: 2024/05/23 02:34:09 by sbouheni         ###   ########.fr       */
+/*   Updated: 2024/05/24 15:31:28 by sbouheni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ScalarConverter.hpp"
-#include <cctype>
-#include <sstream>
 
 void ScalarConverter::convert(std::string const &input)
 {
@@ -28,7 +26,7 @@ void ScalarConverter::convert(std::string const &input)
 	else if (inputType == double_type)
 		processDouble(input);
 	else
-		std::cerr << "Convert can't recognize format" << std::endl;
+		std::cerr << "Format not recognized" << std::endl;
 }
 
 type ScalarConverter::determineType(std::string const &input)
@@ -71,42 +69,136 @@ void ScalarConverter::processChar(std::string const &input)
 
 void ScalarConverter::processInt(std::string const &input)
 {
-	std::cout << "INT PROCESS" << std::endl;
-	long int value = strtol(input.c_str(), NULL, 10);
-	if (errno == ERANGE || value > INT_MAX || value < INT_MIN)
+	std::string char_output;
+	std::string int_output;
+	std::string double_output;
+	std::string float_output;
+	double double_value = 0;
+	float float_value = 0;
+	int		int_value = 0;
+
+	// Int conversion
+	long long_value = strtol(input.c_str(), NULL, 10);
+	if (errno == ERANGE || long_value > INT_MAX || long_value < INT_MIN)
 	{
-		std::cerr << "Value is out of int range" << std::endl;
-		errno = 0;
-		return;
+		/*int_output = "Impossible";*/
+		std::cerr << "Int overflow" << std::endl;
+		return ;
 	}
-	std::cout << value << std::endl;
+	int_value = static_cast<int>(long_value);
+	double_value = static_cast<double>(int_value);
+	float_value = static_cast<float>(int_value);
+	char_output = charToString(int_value);
+	int_output = intToString(int_value);
+	double_output = doubleToString(double_value);
+	float_output = floatToString(float_value);
+	printConvertedOutput(char_output, int_output, double_output, float_output);
 }
 
 void ScalarConverter::processFloat(std::string const &input)
 {
-	std::cout << "FLOAT PROCESS" << std::endl;
-	float value = strtof(input.c_str(), NULL);
-	if (errno == ERANGE)
+	std::string char_output;
+	std::string int_output;
+	std::string double_output;
+	std::string float_output;
+	int int_value;
+	double double_value;
+	float float_value;
+	long long_value;
+
+	// Float conversion
+	float_value = strtof(input.c_str(), NULL);
+	if (errno)
 	{
-		std::cerr << "Value is out of float range" << std::endl;
-		errno = 0;
-		return;
+		std::cerr << "Float overflow" << std::endl;
+		return ;
 	}
-	std::cout << value << std::endl;
+	float_output = floatToString(float_value);
+	// Int and Char conversion
+	long_value = strtol(input.c_str(), NULL, 10);
+	if (errno)
+	{
+		int_output = "Impossible";
+		char_output = "Impossible";
+		errno = 0;
+	}
+	else
+	{
+		long_value = static_cast<long>(float_value);
+		if (long_value < INT_MIN || long_value > INT_MAX)
+		{
+			int_output = "Impossible";
+			char_output = "Impossible";
+		}
+		else
+		{
+			int_value = static_cast<int>(float_value);
+			int_output = intToString(int_value);
+			char_output = charToString(int_value);
+		}
+	}
+	// Double conversion
+	double_value = static_cast<double>(float_value);
+	double_output = doubleToString(double_value);
+	printConvertedOutput(char_output, int_output, double_output, float_output);
 }
 
 void ScalarConverter::processDouble(std::string const &input)
 {
-	std::cout << "DOUBLE PROCESS" << std::endl;
-	double value = strtod(input.c_str(), NULL);
-	if (errno == ERANGE)
+	std::string char_output;
+	std::string int_output;
+	std::string double_output;
+	std::string float_output;
+	int int_value;
+	double double_value;
+	float float_value;
+	long long_value;
+
+	// Double conversion
+	double_value = strtod(input.c_str(), NULL);
+	if (errno)
 	{
-		std::cerr << "Value cause double underflow" << std::endl;
-		errno = 0;
+		std::cerr << "Float overflow" << std::endl;
 		return;
 	}
+	double_output = doubleToString(double_value);
 
-	std::cout << value << std::endl;
+	// Float conversion
+	float_value = strtof(input.c_str(), NULL);
+	if (errno)
+	{
+		float_output = "Impossible";
+	}
+	else 
+	{
+		float_output = floatToString(float_value);
+	}
+	errno = 0;
+
+	// Int and Char conversion
+	long_value = strtol(input.c_str(), NULL, 10);
+	if (errno)
+	{
+		int_output = "Impossible";
+		char_output = "Impossible";
+		errno = 0;
+	}
+	else
+	{
+		long_value = static_cast<long>(double_value);
+		if (long_value < INT_MIN || long_value > INT_MAX)
+		{
+			int_output = "Impossible";
+			char_output = "Impossible";
+		}
+		else
+		{
+			int_value = static_cast<int>(double_value);
+			int_output = intToString(int_value);
+			char_output = charToString(int_value);
+		}
+	}
+	printConvertedOutput(char_output, int_output, double_output, float_output);
 }
 
 bool ScalarConverter::isChar(const std::string &str)
@@ -177,6 +269,24 @@ bool ScalarConverter::isDouble(const std::string &str)
 	return (has_digit && has_point);
 }
 
+std::string ScalarConverter::charToString(int value)
+{
+	std::string char_output;
+	char		char_value;
+
+	if (value < 0 || value > 255)
+		char_output = "Impossible";
+	else
+	{
+		char_value = static_cast<char>(value);
+		if (isprint(char_value))
+			char_output = char_value;
+		else
+			char_output = "Non displayable";
+	}
+	return (char_output);
+}
+
 std::string ScalarConverter::intToString(int value)
 {
 	std::stringstream ss;
@@ -187,14 +297,17 @@ std::string ScalarConverter::intToString(int value)
 std::string ScalarConverter::doubleToString(double value)
 {
 	std::stringstream ss;
-	ss << value;
+	ss << std::fixed << std::setprecision(1) << value;
 	return (ss.str());
 }
 
 std::string ScalarConverter::floatToString(float value)
 {
 	std::stringstream ss;
-	ss << value;
+	ss << std::fixed << std::setprecision(1) << value << "f";
+	/*if (isRound(value))*/
+	/*	ss << ".0";*/
+	/*ss << "f";*/
 	return (ss.str());
 }
 
@@ -203,8 +316,11 @@ void ScalarConverter::printConvertedOutput(std::string const &charOutput,
 		std::string const &doubleOutput,
 		std::string const &floatOutput)
 {
-	std::cout << "char		= '" << charOutput << "'" << std::endl;
+	if (charOutput == "Impossible" || charOutput == "Non displayable")
+		std::cout << "char		= "<< charOutput << std::endl;
+	else
+		std::cout << "char		= '" << charOutput << "'" << std::endl;
 	std::cout << "int		= " << intOutput << std::endl;
-	std::cout << "float		= " << floatOutput << std::endl;
+	std::cout << std::fixed << "float		= " << floatOutput << std::endl;
 	std::cout << "double		= " << doubleOutput << std::endl;
 }
