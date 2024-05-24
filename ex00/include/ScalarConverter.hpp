@@ -6,7 +6,7 @@
 /*   By: sbouheni <sbouheni@student.42mulhouse.fr>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 11:32:14 by sbouheni          #+#    #+#             */
-/*   Updated: 2024/05/24 15:31:20 by sbouheni         ###   ########.fr       */
+/*   Updated: 2024/05/25 01:52:50 by sbouheni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ typedef enum type
 class ScalarConverter
 {
 private:
+	ScalarConverter() {};
+	~ScalarConverter() {};
 	static type determineType(std::string const &);
 	static void processChar(std::string const &);
 	static void processInt(std::string const &);
@@ -52,8 +54,6 @@ private:
 	static std::string intToString(int value);
 	static std::string doubleToString(double value);
 	static std::string floatToString(float value);
-	/*static bool isRound(float const &value);*/
-	/*static bool isRound(double const &value);*/
 public:
 	static void convert(std::string const &);
 };
