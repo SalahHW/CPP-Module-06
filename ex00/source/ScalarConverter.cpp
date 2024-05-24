@@ -6,7 +6,7 @@
 /*   By: sbouheni <sbouheni@student.42mulhouse.fr>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 09:55:34 by sbouheni          #+#    #+#             */
-/*   Updated: 2024/05/24 15:31:28 by sbouheni         ###   ########.fr       */
+/*   Updated: 2024/05/24 15:34:32 by sbouheni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,6 @@ void ScalarConverter::processInt(std::string const &input)
 	long long_value = strtol(input.c_str(), NULL, 10);
 	if (errno == ERANGE || long_value > INT_MAX || long_value < INT_MIN)
 	{
-		/*int_output = "Impossible";*/
 		std::cerr << "Int overflow" << std::endl;
 		return ;
 	}
@@ -305,9 +304,6 @@ std::string ScalarConverter::floatToString(float value)
 {
 	std::stringstream ss;
 	ss << std::fixed << std::setprecision(1) << value << "f";
-	/*if (isRound(value))*/
-	/*	ss << ".0";*/
-	/*ss << "f";*/
 	return (ss.str());
 }
 
