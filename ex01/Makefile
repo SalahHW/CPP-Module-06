@@ -6,21 +6,21 @@
 #    By: sbouheni <sbouheni@student.42mulhouse.fr>  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/22 18:39:10 by sbouheni          #+#    #+#              #
-#    Updated: 2024/05/22 17:17:54 by sbouheni         ###   ########.fr        #
+#    Updated: 2024/05/25 02:00:13 by sbouheni         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME					=	convert
+NAME					=	serialier
 
 CXX						=	c++
-CXXFLAGS				=	-Wall -Wextra -Werror -std=c++98 -g #-fsanitize=address
+CXXFLAGS				=	-Wall -Wextra -Werror -g -std=c++98 #-fsanitize=address
 
 INCLUDE_DIR				=	include/
 SRCS_DIR				=	source/
 OBJ_DIR					=	obj/
 
 SRCS					=	main.cpp											\
-							ScalarConverter.cpp									\
+							Serializer.cpp										\
 
 OBJS        			=	$(addprefix $(OBJ_DIR), $(SRCS:.cpp=.o))
 
