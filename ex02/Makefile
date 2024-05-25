@@ -6,14 +6,14 @@
 #    By: sbouheni <sbouheni@student.42mulhouse.fr>  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/22 18:39:10 by sbouheni          #+#    #+#              #
-#    Updated: 2024/05/25 02:31:16 by sbouheni         ###   ########.fr        #
+#    Updated: 2024/05/25 04:16:47 by sbouheni         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME					=	base
 
 CXX						=	c++
-CXXFLAGS				=	-Wall -Wextra -Werror -g -std=c++98 #-fsanitize=address
+CXXFLAGS				=	-Wall -Wextra -Werror -g -std=c++98 -fsanitize=address
 
 INCLUDE_DIR				=	include/
 SRCS_DIR				=	source/
